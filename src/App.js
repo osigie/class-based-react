@@ -6,9 +6,9 @@ export default class App extends Component {
     this.state = {
       userName: "Zander",
       todoItems: [
-        { action: "Buy Milk", done: true },
-        { action: "Dentist at 5pm", done: false },
-        { action: "Go to Gym", done: false },
+        { id: 1, action: "Buy Milk", done: true },
+        { id: 2, action: "Dentist at 5pm", done: false },
+        { id: 3, action: "Go to Gym", done: false },
       ],
       newTodo: "",
     };
@@ -21,17 +21,51 @@ export default class App extends Component {
     });
   };
 
+  toggleDone = (data) => {
+    this.setState({
+      ...this.state,
+      todoItems: this.state.todoItems.map((todo) => {
+        if (todo.id === data) {
+          todo = { ...todo, done: !todo.done };
+        }
+
+        return todo;
+      }),
+    });
+  };
+
   todoRows() {
     return this.state.todoItems.map((todo) => {
       return (
         <tr key={todo.action}>
           <td>{todo.action}</td>
+          <td>
+            <input
+              type="checkbox"
+              name="done"
+              checked={todo.done}
+              onChange={() => this.toggleDone(todo.id)}
+            />
+          </td>
         </tr>
       );
     });
   }
 
+  addTodo() {
+    const id = this.state.todoItems.length + 1;
+    this.setState({
+      ...this.state,
+      todoItems: [
+        ...this.state.todoItems,
+        { id, action: this.state.newTodo, done: false },
+      ],
+    });
+    // this.setState({...this.state, newTodo:""})
+  }
+
   render = () => {
+    
     return (
       <div className="container">
         <div className="row">
@@ -46,16 +80,26 @@ export default class App extends Component {
               className="form-control"
               placeholder="add todo"
               value={this.state.newTodo}
+              onChange={(event) =>
+                this.setState({ ...this.state, newTodo: event.target.value })
+              }
             />
+            <button
+              className="btn btn-primary"
+              onClick={this.addTodo.bind(this)}
+            >
+              Add Todo
+            </button>
           </div>
           <div className="col-12">
             <table className="table">
               <thead>
                 <tr>
                   <th>Task</th>
+                  <th>Complete</th>
                 </tr>
               </thead>
-              <tbody>{this.todoRows()}</tbody>
+              <tbody>{this.todoRows.bind(this)()}</tbody>
 
               <tbody></tbody>
             </table>
