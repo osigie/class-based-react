@@ -5,7 +5,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: "Zander",
+      userName: "Osagie",
       todoItems: [
         { id: 1, action: "Buy Milk", done: true },
         { id: 2, action: "Dentist at 5pm", done: false },
@@ -35,37 +35,17 @@ export default class App extends Component {
     });
   };
 
-  // todoRows() {
-  //   return this.state.todoItems.map((todo) => {
-  //     return (
-  //       <tr key={todo.action}>
-  //         <td>{todo.action}</td>
-  //         <td>
-  //           <input
-  //             type="checkbox"
-  //             name="done"
-  //             checked={todo.done}
-  //             onChange={() => this.toggleDone(todo.id)}
-  //           />
-  //         </td>
-  //       </tr>
-  //     );
-  //   });
-  // }
-
   todoRows() {
     return this.state.todoItems.map((todo) => {
-      return (
-        <TodoRows
-          key={todo.id}
-          toggleDone={this.toggleDone}
-          {...todo}
-        />
-      );
+      return <TodoRows key={todo.id} toggleDone={this.toggleDone} {...todo} />;
     });
   }
 
   addTodo() {
+    if (this.state.newTodo.length <= 0) {
+      alert("Please input new Todo");
+      return;
+    }
     const id = this.state.todoItems.length + 1;
     this.setState({
       ...this.state,
@@ -74,7 +54,7 @@ export default class App extends Component {
         { id, action: this.state.newTodo, done: false },
       ],
     });
-    // this.setState({...this.state, newTodo:""})
+    this.setState({ newTodo: "" });
   }
 
   render = () => {
