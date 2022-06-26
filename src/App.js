@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-
+import Navbar from "./components/Navbar";
+import TodoRows from "./components/TodoRows";
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -34,20 +35,32 @@ export default class App extends Component {
     });
   };
 
+  // todoRows() {
+  //   return this.state.todoItems.map((todo) => {
+  //     return (
+  //       <tr key={todo.action}>
+  //         <td>{todo.action}</td>
+  //         <td>
+  //           <input
+  //             type="checkbox"
+  //             name="done"
+  //             checked={todo.done}
+  //             onChange={() => this.toggleDone(todo.id)}
+  //           />
+  //         </td>
+  //       </tr>
+  //     );
+  //   });
+  // }
+
   todoRows() {
     return this.state.todoItems.map((todo) => {
       return (
-        <tr key={todo.action}>
-          <td>{todo.action}</td>
-          <td>
-            <input
-              type="checkbox"
-              name="done"
-              checked={todo.done}
-              onChange={() => this.toggleDone(todo.id)}
-            />
-          </td>
-        </tr>
+        <TodoRows
+          key={todo.id}
+          toggleDone={this.toggleDone}
+          {...todo}
+        />
       );
     });
   }
@@ -65,15 +78,10 @@ export default class App extends Component {
   }
 
   render = () => {
-    
     return (
       <div className="container">
         <div className="row">
-          <div className="col-12">
-            <h2 className="bg-primary text-white text-center p2">
-              {this.state.userName} To do list
-            </h2>
-          </div>
+          <Navbar name={this.state.userName} />
           <div className="col-12">
             <input
               type="text"
